@@ -51,8 +51,14 @@ public class MyMain {
 
     // Tail Recursive Method:
     public static int sumTR(int[] arr, int i, int sum) {
-        // YOUR CODE HERE
-        return -1;
+        if (i == arr.length) {
+            return sum;
+        }
+        else if ( i < arr.length){
+            int w = arr[i];
+            return sumTR(arr, i + 1, sum + w);
+        }
+        return sum;
     }
 
 
@@ -69,14 +75,18 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean search(ArrayList<Integer> list, int x) {
-        // YOUR CODE HERE
-        return false;
+        return searchTR(list, x, 0);
     }
 
     // Tail Recursive Method:
     public static boolean searchTR(ArrayList<Integer> list, int x, int i) {
-        // YOUR CODE HERE
-        return false;
+        if (i == list.size()) {
+            return false;
+        } else if (list.get(i) != x) {
+            return searchTR(list, x, i + 1);
+        } else {
+            return true;
+        }
     }
 
 
@@ -89,13 +99,24 @@ public class MyMain {
 
     // Wrapper Method (Provided for you):
     public static boolean allEven(int[] arr) {
-        // YOUR CODE HERE
-        return false;
+        return allEven1(arr, 0);
     }
 
     // Tail Recursive Method:
     // You should write this yourself!
+    public static boolean allEven1(int[] arr, int i) {
+        // YOUR CODE HERE
+        if (i == arr.length) {
+            return true;
+        }
+        else if((i < arr.length)&& (arr[i]%2 == 0)){
+            return allEven1(arr,i+1);
+        }
+        else{
+            return false;
+        }
 
+    }
 
     // ********************
     // Examples From Class:
@@ -136,8 +157,21 @@ public class MyMain {
 
     // Wrapper method
     public static boolean hasCountCopies(int[] arr, int x, int count) {
-        // YOUR CODE HERE
-        return false;
+        return hasCountCopies1(arr, x , count, 0, 0);
+    }
+    public static boolean hasCountCopies1(int[] arr, int x, int count, int y, int i) {
+        if ((i == arr.length)&&(count == y)){
+            return true;
+        }
+        if ((i == arr.length)&&(count != y)){
+            return false;
+        }
+        else if (arr[i] == x) {
+            return hasCountCopies1(arr, x, count, y + 1, i + 1);
+        }
+        else {
+            return hasCountCopies1(arr, x, count, y, i + 1);
+        }
     }
 
     // You may want a tail recursive method
@@ -149,10 +183,20 @@ public class MyMain {
     // Wrapper method
     public static boolean isSorted(ArrayList<Integer> list) {
         // YOUR CODE HERE
+        return isSorted1(list, 0);
+    }
+    public static boolean isSorted1(ArrayList<Integer> list,int i) {
+        if (i == list.size()-1){
+            return true;
+        }
+        else if( list.get(i) <= list.get(i+1)){
+            return isSorted1(list, i + 1);
+        }
         return false;
     }
 
-    // You may want a tail recursive method
+
+        // You may want a tail recursive method
 
 
 
@@ -183,8 +227,27 @@ public class MyMain {
 
     // No tail recursion necessary!
     public static boolean escape(char[][] mat, int row, int col) {
-        // YOUR CODE HERE
-        return false;
+        if (row < 0 || col < 0 || row >= mat.length || col >= mat[0].length){
+            return false;
+        }
+        // If we're at wall, don't do anything
+        else if (mat[row][col] == 'w') {
+            return false;
+        }
+        // If we've already visited there, let's return early
+        else if (mat[row][col] == '*') {
+            return false;
+        }
+        else {
+            // Leave "breadcrumbs"
+            mat[row][col] = '*';
+
+            // Visit our neighbors (left, up, right, down)
+            floodFill(mat, row, col-1);
+            floodFill(mat, row-1, col);
+            floodFill(mat, row, col+1);
+            floodFill(mat, row+1, col);
+        }
     }
 
 
